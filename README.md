@@ -69,14 +69,15 @@ Aplikasi dapat diakses di: **http://localhost**
 
 ---
 
-## 📋 Akun Demo (Default)
+##  Akun Demo (Default)
 
 | Role | Email | Password |
 | :--- | :--- | :--- |
-| **Admin** | `admin@skynet.com` | `password123` |
-| **Manager** | `manager@skynet.com` | `password123` |
-| **Kasir** | `cashier@skynet.com` | `password123` |
-| **Kurir** | `courier@skynet.com` | `password123` |
+| **Admin** | `admin@expedisi.com` | `password` |
+| **Manager** | `manager@expedisi.com` | `password` |
+| **Kasir** | `cashier@expedisi.com` | `password` |
+| **Delivery** | `delivery@expedisi.com` | `password` |
+| **Transit** | `transit@expedisi.com` | `password` |
 
 ---
 
