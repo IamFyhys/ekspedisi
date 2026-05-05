@@ -1,4 +1,4 @@
-# 🚀 Skynet Logistics - Premium Expedition Management System
+#  Skynet Logistics - Premium Expedition Management System
 
 [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
@@ -8,9 +8,9 @@
 
 ---
 
-## ✨ Fitur Utama
+##  Fitur Utama
 
-### 🏢 Multi-Role Dashboard
+###  Multi-Role Dashboard
 Sistem terintegrasi untuk berbagai peran operasional:
 *   **Admin Central:** Monitoring seluruh jaringan ekspedisi dan persetujuan aplikasi staff.
 *   **Manager Cabang:** Manajemen staff cabang, omzet, dan audit operasional harian.
@@ -18,21 +18,21 @@ Sistem terintegrasi untuk berbagai peran operasional:
 *   **Kurir (Pickup & Delivery):** Navigasi penjemputan barang dan konfirmasi pengiriman paket.
 *   **Kurir Transit:** Manajemen perpindahan barang antar gudang (*manifest*).
 
-### 🛰️ Tracking & Pelayanan
+###  Tracking & Pelayanan
 *   **Real-time Tracking:** Lacak posisi paket menggunakan nomor resi secara instan.
 *   **Cek Tarif:** Perhitungan biaya kirim berdasarkan berat dan volume paket.
 *   **Gabung Tim:** Landing page premium untuk pendaftaran calon staff.
 
-### 💳 Integrasi Pembayaran
+###  Integrasi Pembayaran
 *   **Midtrans Core API:** Integrasi gerbang pembayaran otomatis untuk keamanan transaksi.
 
-### 🐳 Infrastructure as Code (DevOps)
+###  Infrastructure as Code (DevOps)
 *   **Docker Ready:** Konfigurasi container terpisah untuk App, Web (Nginx), dan Database.
 *   **Load Balancing:** Deployment menggunakan Nginx sebagai reverse proxy ke beberapa replika aplikasi.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 *   **Backend:** Laravel 11 / PHP 8.2
 *   **Frontend:** Vanilla CSS (Premium Dark Mode), Blade, Vite
@@ -43,7 +43,7 @@ Sistem terintegrasi untuk berbagai peran operasional:
 
 ---
 
-## 🚀 Setup dengan Docker (Rekomendasi Ujikom)
+##  Setup dengan Docker (Rekomendasi Ujikom)
 
 ### 1. Persiapan
 Pastikan Docker dan Docker Compose sudah terinstal di mesin Anda.
@@ -80,7 +80,7 @@ Aplikasi dapat diakses di: **http://localhost**
 
 ---
 
-## 📂 Struktur Proyek
+##  Struktur Proyek
 
 ```text
 app/
@@ -98,7 +98,7 @@ docker-compose.yml         # Orkestrasi sistem
 
 ---
 
-## 👤 Author
+##  Author
 **Padli** - *Software Development & DevOps Engineer*
 *(redmiyahya15@gmail.com)*
 
