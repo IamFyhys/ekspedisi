@@ -1,58 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Skynet Logistics - Premium Expedition Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
 
-## About Laravel
+**Skynet Logistics** adalah platform manajemen ekspedisi modern yang dirancang untuk efisiensi tinggi, skalabilitas, dan keamanan. Aplikasi ini mencakup seluruh alur operasional logistik, mulai dari penjemputan paket (*pickup*), pengiriman (*delivery*), hingga manajemen cabang dan keuangan.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🏢 Multi-Role Dashboard
+Sistem terintegrasi untuk berbagai peran operasional:
+*   **Admin Central:** Monitoring seluruh jaringan ekspedisi dan persetujuan aplikasi staff.
+*   **Manager Cabang:** Manajemen staff cabang, omzet, dan audit operasional harian.
+*   **Kasir:** Pencatatan transaksi, pembuatan resi, dan manajemen *shift*.
+*   **Kurir (Pickup & Delivery):** Navigasi penjemputan barang dan konfirmasi pengiriman paket.
+*   **Kurir Transit:** Manajemen perpindahan barang antar gudang (*manifest*).
 
-## Learning Laravel
+### 🛰️ Tracking & Pelayanan
+*   **Real-time Tracking:** Lacak posisi paket menggunakan nomor resi secara instan.
+*   **Cek Tarif:** Perhitungan biaya kirim berdasarkan berat dan volume paket.
+*   **Gabung Tim:** Landing page premium untuk pendaftaran calon staff.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 💳 Integrasi Pembayaran
+*   **Midtrans Core API:** Integrasi gerbang pembayaran otomatis untuk keamanan transaksi.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🐳 Infrastructure as Code (DevOps)
+*   **Docker Ready:** Konfigurasi container terpisah untuk App, Web (Nginx), dan Database.
+*   **Load Balancing:** Deployment menggunakan Nginx sebagai reverse proxy ke beberapa replika aplikasi.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🛠️ Tech Stack
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+*   **Backend:** Laravel 11 / PHP 8.2
+*   **Frontend:** Vanilla CSS (Premium Dark Mode), Blade, Vite
+*   **Database:** MySQL 8.0
+*   **Server:** Nginx + PHP-FPM
+*   **Infrastructure:** Docker & Docker Compose
+*   **Automation:** Ansible (Ujikom Scenarios)
 
+---
+
+## 🚀 Setup dengan Docker (Rekomendasi Ujikom)
+
+### 1. Persiapan
+Pastikan Docker dan Docker Compose sudah terinstal di mesin Anda.
+
+### 2. Konfigurasi Environment
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+cp .env.example .env
+# Masukkan App Key dan Kredensial Midtrans di .env
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 3. Build dan Jalankan
+```bash
+docker-compose up -d --build
+```
 
-## Contributing
+### 4. Inisialisasi Database
+```bash
+docker-compose exec app php artisan migrate --seed
+docker-compose exec app php artisan storage:link
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Aplikasi dapat diakses di: **http://localhost**
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📋 Akun Demo (Default)
 
-## Security Vulnerabilities
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin@skynet.com` | `password123` |
+| **Manager** | `manager@skynet.com` | `password123` |
+| **Kasir** | `cashier@skynet.com` | `password123` |
+| **Kurir** | `courier@skynet.com` | `password123` |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📂 Struktur Proyek
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```text
+app/
+├── Http/Controllers/      # Logika Bisnis (Admin, Manager, Kasir, Kurir)
+├── Models/                # Struktur Database (Shipment, User, Branch)
+├── Services/              # Layanan Eksternal (Midtrans, Rate Calculation)
+resources/
+├── views/                 # Tampilan UI (Blade Templates)
+├── css/                   # Styling Custom (Dark Mode Premium)
+docker/
+├── nginx.conf             # Konfigurasi Load Balancer
+Dockerfile                 # Resi perakitan container aplikasi
+docker-compose.yml         # Orkestrasi sistem
+```
+
+---
+
+## 👤 Author
+**Padli** - *Software Development & DevOps Engineer*
+*(redmiyahya15@gmail.com)*
+
+---
+*Dikembangkan untuk Ujian Kompetensi (Ujikom) - 2026*
