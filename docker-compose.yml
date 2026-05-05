@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Nginx Reverse Proxy (Load Balancer)
+  proxy:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - skynet_network
+    depends_on:
+      - app
+
+  # Laravel Application Nodes (Load Balanced)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      # Mount storage directory agar file upload (seperti crop foto) tidak hilang
+      - storage_data:/var/www/html/storage
+    networks:
+      - skynet_network
+    environment:
+      # Database diatur untuk menggunakan container MySQL
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=skynet_db
+      - DB_USERNAME=skynet_user
+      - DB_PASSWORD=skynet_password
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=http://localhost
+    # Syarat Ujikom: Deploy aplikasi menggunakan Load Balance (minimal 2 replicas)
+    deploy:
+      replicas: 2
+
+  # Database Service (MySQL)
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: skynet_db
+      MYSQL_USER: skynet_user
+      MYSQL_PASSWORD: skynet_password
+      MYSQL_ROOT_PASSWORD: secret_root_password
+    volumes:
+      # Syarat Ujikom: Menggunakan Docker Volume agar data persisten
+      - db_data:/var/lib/mysql
+    networks:
+      - skynet_network
+    ports:
+      - "3306:3306"
+
+# Syarat Ujikom: Docker Custom Network
+networks:
+  skynet_network:
+    driver: bridge
+
+# Definisi Volumes
+volumes:
+  db_data:
+  storage_data:

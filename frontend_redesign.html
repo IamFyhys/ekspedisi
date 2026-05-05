@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expedition — Solusi Logistik Terpercaya</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #F4F6FB;
+            --bg2: rgba(255, 255, 255, 0.92);
+            --bg3: #EEF1F8;
+            --surface: #FFFFFF;
+            --border: rgba(0,0,0,0.07);
+            --text: #0F172A;
+            --muted: #64748B;
+            --hint: #94A3B8;
+            --accent: #4F46E5;
+            --accent-hover: #4338CA;
+            --green: #10B981;
+            --green-hover: #059669;
+            --red: #EF4444;
+            --amber: #F59E0B;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --nav-height: 80px;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0B0F1A;
+            --bg2: rgba(17, 24, 39, 0.92);
+            --bg3: #1E2435;
+            --surface: #1E2435;
+            --border: rgba(255,255,255,0.07);
+            --text: #F1F5F9;
+            --muted: #94A3B8;
+            --hint: #64748B;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* --- Utility Classes --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        .btn-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
+        .btn-outline:hover { background: rgba(79, 70, 229, 0.08); }
+
+        .btn-ghost { background: transparent; color: var(--accent); }
+        .btn-ghost:hover { background: rgba(79, 70, 229, 0.05); }
+
+        .btn-emerald { background: var(--green); color: white; }
+        .btn-emerald:hover { background: var(--green-hover); transform: translateY(-2px); }
+
+        .btn-full { width: 100%; }
+
+        /* --- Canvas Ripple --- */
+        #ripple-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            display: none;
+        }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            background: var(--bg2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            height: 70px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 22px;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .theme-toggle {
+            background: var(--bg3);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-toggle:active { transform: scale(0.9); }
+
+        /* --- User Avatar --- */
+        .user-profile {
+            position: relative;
+            display: none; /* Initially hidden */
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 50px;
+            transition: background 0.2s;
+        }
+
+        .user-profile:hover { background: var(--bg3); }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .avatar .staff-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background: var(--green);
+            border: 2px solid var(--surface);
+            border-radius: 50%;
+            display: none;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 220px;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            padding: 8px;
+            display: none;
+            transform-origin: top right;
+            animation: dropdownIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            border-radius: 8px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover { background: var(--bg3); color: var(--accent); }
+        .dropdown-divider { height: 1px; background: var(--border); margin: 8px 0; }
+        .dropdown-item.logout { color: var(--red); }
+
+        /* --- Sections --- */
+        section {
+            padding: 100px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* --- Hero Section --- */
+        #page-home { display: block; }
+
+        .hero-section {
+            padding-top: 160px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dot-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, var(--hint) 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .blob-gradient {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(ellipse, #818CF8 0%, transparent 70%);
+            opacity: 0.12;
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .badge-promo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--bg3);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 24px;
+            opacity: 0;
+        }
+
+        .dot-pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .hero-title {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            opacity: 0;
+        }
+
+        .hero-title span { color: var(--accent); }
+
+        .hero-subtext {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 500px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 16px;
+            opacity: 0;
+        }
+
+        .hero-visual {
+            position: relative;
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 1s ease-out 0.4s;
+        }
+
+        .hero-image {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: block;
+        }
+
+        .floating-card {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            background: var(--surface);
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .check-circle {
+            width: 32px;
+            height: 32px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-card .val { font-size: 20px; font-weight: 800; }
+        .floating-card .lbl { font-size: 12px; color: var(--muted); }
+
+        /* Hero Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-enter-1 { animation: slideUp 0.6s ease forwards; }
+        .hero-enter-2 { animation: slideUp 0.6s ease forwards 0.1s; }
+        .hero-enter-3 { animation: slideUp 0.6s ease forwards 0.2s; }
+        .hero-enter-4 { animation: slideUp 0.6s ease forwards 0.3s; }
+        .hero-visual.is-visible { opacity: 1; transform: translateX(0); }
+
+        /* --- Tracking Section --- */
+        .tracking-section {
+            background-color: var(--bg3);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        .section-header h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+        .section-header p { color: var(--muted); font-size: 16px; }
+
+        .tracking-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 8px;
+            border-radius: 16px;
+            display: flex;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .tracking-form:focus-within {
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            border-color: var(--accent);
+        }
+
+        .tracking-form input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 0 20px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text);
+            outline: none;
+        }
+
+        /* --- Timeline Result --- */
+        #tracking-result {
+            max-width: 700px;
+            margin: 40px auto 0;
+            display: none;
+        }
+
+        .result-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .result-header {
+            padding: 24px;
+            background: var(--bg3);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-item .label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+        .info-item .value { font-size: 15px; font-weight: 700; }
+
+        .timeline {
+            padding: 32px 40px;
+            position: relative;
+        }
+
+        .timeline-step {
+            display: flex;
+            gap: 24px;
+            position: relative;
+            padding-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .timeline-step:last-child { padding-bottom: 0; }
+
+        .timeline-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--hint);
+            z-index: 1;
+            border: 2px solid var(--surface);
+        }
+
+        .line {
+            width: 2px;
+            flex: 1;
+            background: var(--border);
+            margin-top: 4px;
+            margin-bottom: -18px;
+        }
+
+        .timeline-step.completed .dot { background: var(--accent); }
+        .timeline-step.completed .line { background: var(--accent); }
+
+        .timeline-step.active .dot {
+            background: var(--green);
+            width: 18px;
+            height: 18px;
+            position: relative;
+        }
+
+        .timeline-step.active .dot::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border-radius: 50%;
+            border: 2px solid var(--green);
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes ping {
+            75%, 100% { transform: scale(2); opacity: 0; }
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-content h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .timeline-content p { font-size: 14px; color: var(--muted); }
+        .timeline-content .time { font-size: 12px; color: var(--hint); margin-top: 4px; display: block; }
+
+        .badge-active {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-left: 8px;
+        }
+
+        /* --- Services Grid --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover .service-icon { transform: scale(1.1); }
+
+        .service-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+        .service-card p { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+        .service-price { font-size: 12px; font-weight: 700; color: var(--accent); background: rgba(79, 70, 229, 0.05); padding: 4px 10px; border-radius: 50px; }
+
+        /* --- Stats Section --- */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            text-align: center;
+        }
+
+        .stat-item {
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: var(--border);
+        }
+
+        .stat-number { font-size: 40px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+        .stat-label { font-size: 14px; color: var(--muted); font-weight: 600; }
+
+        /* --- Portal / Register Section --- */
+        .portal-section {
+            background: var(--bg);
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .portal-card {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .portal-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+        .portal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .portal-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portal-card.customer .portal-icon { background: rgba(79, 70, 229, 0.1); color: var(--accent); }
+        .portal-card.staff .portal-icon { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+
+        .portal-card h3 { font-size: 22px; font-weight: 700; }
+        .portal-card p { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .feature-list li svg { color: var(--green); }
+
+        /* --- Login / Register Pages --- */
+        .auth-split {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .auth-panel {
+            flex: 0.4;
+            background: linear-gradient(135deg, var(--accent), #6366F1);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-panel::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .auth-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-content h2 { font-size: 36px; font-weight: 800; margin-bottom: 20px; }
+        .auth-content p { font-size: 18px; opacity: 0.8; line-height: 1.6; }
+
+        .auth-form-side {
+            flex: 0.6;
+            background: var(--bg);
+            padding: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-box { width: 100%; max-width: 440px; }
+        .auth-box h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+        .auth-box p.sub { color: var(--muted); margin-bottom: 32px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+        .form-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-input-wrap svg { position: absolute; left: 16px; color: var(--hint); }
+        .form-input-wrap input, .form-input-wrap select {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input-wrap input:focus, .form-input-wrap select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .checkbox-group { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .form-options a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+            color: var(--hint);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* --- Staff Login Specific --- */
+        #page-staff-login {
+            background-color: var(--bg3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-login-card {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid var(--border);
+        }
+
+        .staff-badge-lock {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        /* --- Multi-step Register --- */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--muted);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active { background: var(--accent); color: white; }
+        .step-dot.done { background: var(--green); color: white; }
+        .step-line { flex: 1; height: 2px; background: var(--border); }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .role-option {
+            border: 2px solid var(--border);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .role-option:hover { border-color: var(--accent); background: rgba(79, 70, 229, 0.02); }
+        .role-option.selected { border-color: var(--accent); background: rgba(79, 70, 229, 0.05); }
+        .role-option.selected.staff { border-color: var(--green); background: rgba(16, 185, 129, 0.05); }
+
+        .role-option h4 { margin-top: 12px; margin-bottom: 4px; }
+        .role-option p { font-size: 12px; color: var(--muted); }
+
+        /* --- Footer --- */
+        footer {
+            padding: 80px 0 40px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 { font-size: 16px; font-weight: 700; margin-bottom: 24px; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { text-decoration: none; color: var(--muted); font-size: 14px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+
+        .social-links { display: flex; gap: 16px; margin-top: 24px; }
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover { background: var(--accent); color: white; transform: translateY(-3px); }
+
+        .footer-bottom {
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--hint);
+            font-size: 13px;
+        }
+
+        /* --- Toast --- */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: var(--accent);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast-success { background: var(--green); }
+        .toast-error { background: var(--red); }
+
+        /* --- Spinner --- */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- Responsive --- */
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-subtext { margin: 0 auto 40px; }
+            .hero-btns { justify-content: center; }
+            .hero-visual { max-width: 500px; margin: 40px auto 0; }
+            .auth-panel { display: none; }
+            .auth-form-side { flex: 1; padding: 40px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(2)::after { display: none; }
+            .portal-grid { grid-template-columns: 1fr; }
+            .role-selector { grid-template-columns: 1fr; }
+            .hero-title { font-size: 36px; }
+        }
+
+        /* --- Shake Animation --- */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+        .input-error { border-color: var(--red) !important; animation: shake 0.3s; }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="ripple-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container nav-container">
+            <a href="javascript:void(0)" onclick="showPage('home')" class="logo">
+                <div class="logo-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                </div>
+                Expedition
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="#hero">Beranda</a></li>
+                <li><a href="#tracking">Lacak Paket</a></li>
+                <li><a href="#layanan">Layanan</a></li>
+                <li><a href="#stats">Tentang</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-btn" onclick="toggleTheme(event)">
+                    <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                
+                <div id="auth-buttons" style="display: flex; gap: 12px;">
+                    <button class="btn btn-ghost" onclick="showPage('login')">Masuk</button>
+                    <button class="btn btn-primary" onclick="showPage('register')">Daftar</button>
+                </div>
+
+                <!-- Logged In Profile -->
+                <div class="user-profile" id="user-profile" onclick="toggleDropdown(event)">
+                    <div class="avatar" id="user-avatar">
+                        BS
+                        <div class="staff-badge" id="staff-indicator"></div>
+                    </div>
+                    <span id="user-name" style="font-weight: 600; font-size: 14px;">Budi Santoso</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                    
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            Profil Saya
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4"></path><path d="m4.93 4.93 2.83 2.83"></path><path d="M2 12h4"></path><path d="m4.93 19.07 2.83-2.83"></path><path d="M12 22v-4"></path><path d="m19.07 19.07-2.83-2.83"></path><path d="M22 12h-4"></path><path d="m19.07 4.93-2.83 2.83"></path></svg>
+                            Riwayat Pengiriman
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            Pengaturan
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="javascript:void(0)" onclick="logout()" class="dropdown-item logout">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            Keluar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page: Home -->
+    <div id="page-home" class="page">
+        <!-- Hero Section -->
+        <section class="hero-section reveal" id="hero">
+            <div class="dot-pattern"></div>
+            <div class="blob-gradient"></div>
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <div class="badge-promo hero-enter-1">
+                        <div class="dot-pulse"></div>
+                        ▶ TERPERCAYA DI SELURUH INDONESIA
+                    </div>
+                    <h1 class="hero-title hero-enter-2">Kirim Barang<br><span>Tanpa Khawatir.</span></h1>
+                    <p class="hero-subtext hero-enter-3">
+                        Solusi pengiriman logistik tercepat dan teraman untuk kebutuhan bisnis maupun personal Anda. Pantau kiriman secara real-time.
+                    </p>
+                    <div class="hero-btns hero-enter-4">
+                        <a href="#tracking" class="btn btn-primary">Lacak Sekarang <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"></path></svg></a>
+                        <button class="btn btn-outline" onclick="showPage('staff-login')">Portal Staff</button>
+                    </div>
+                </div>
+                <div class="hero-visual reveal">
+                    <img src="https://picsum.photos/seed/warehouse/600/400" alt="Logistics Warehouse" class="hero-image">
+                    <div class="floating-card">
+                        <div class="check-circle">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div>
+                            <div class="val" id="success-rate">0%</div>
+                            <div class="lbl">Pengiriman Sukses</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tracking Section -->
+        <section class="tracking-section reveal" id="tracking">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Lacak Kiriman Anda</h2>
+                    <p>Masukkan nomor resi untuk mengetahui status paket secara real-time.</p>
+                </div>
+                
+                <form class="tracking-form" onsubmit="handleTrack(event)">
+                    <input type="text" id="resi-input" placeholder="Contoh: EXP-20260429-XXXX">
+                    <button type="submit" class="btn btn-primary" id="track-btn">Cari Resi</button>
+                </form>
+
+                <div id="tracking-result">
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div class="info-item">
+                                <div class="label">NOMOR RESI</div>
+                                <div class="value" id="res-resi">EXP-20260429-0842</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">ESTIMASI TIBA</div>
+                                <div class="value">Hari ini, 30 Apr 2026</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">ASAL & TUJUAN</div>
+                                <div class="value">Jakarta → Surabaya</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">BERAT PAKET</div>
+                                <div class="value">2.5 Kg</div>
+                            </div>
+                        </div>
+                        <div class="timeline" id="timeline">
+                            <!-- Steps generated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="reveal" id="layanan">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Layanan Kami</h2>
+                    <p>Pilih jenis layanan pengiriman yang sesuai dengan kebutuhan dan budget Anda.</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon" style="background: rgba(79, 70, 229, 0.1); color: var(--accent);">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                        </div>
+                        <h3>Same Day</h3>
+                        <p>Kiriman sampai di hari yang sama sebelum matahari terbenam.</p>
+                        <span class="service-price">Mulai Rp 25.000</span>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--green);">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        </div>
+                        <h3>Reguler</h3>
+                        <p>Layanan pengiriman standar dengan jangkauan seluruh Indonesia.</p>
+                        <span class="service-price">Mulai Rp 10.000</span>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--amber);">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        </div>
+                        <h3>Kargo</h3>
+                        <p>Pengiriman barang berat (diatas 10kg) dengan harga lebih ekonomis.</p>
+                        <span class="service-price">Mulai Rp 5.000 / Kg</span>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--red);">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <h3>COD</h3>
+                        <p>Bayar belanjaan Anda saat kurir mengantarkan paket ke rumah.</p>
+                        <span class="service-price">Admin Fee 2%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="reveal" id="stats">
+            <div class="container stats-row">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="2400000" data-suffix="+">0</div>
+                    <div class="stat-label">Paket Dikirim Hari Ini</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="508">0</div>
+                    <div class="stat-label">Kota Terjangkau</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="99.9" data-decimals="1" data-suffix="%">0</div>
+                    <div class="stat-label">Tingkat Keberhasilan</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="15" data-suffix="+">0</div>
+                    <div class="stat-label">Tahun Pengalaman</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portal Section -->
+        <section class="portal-section reveal" id="portal">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Mulai Sekarang</h2>
+                    <p>Pilih cara masuk sesuai kebutuhanmu.</p>
+                </div>
+                <div class="portal-grid">
+                    <!-- Customer Card -->
+                    <div class="portal-card customer reveal">
+                        <div class="portal-header">
+                            <div class="portal-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                            <h3>Customer</h3>
+                        </div>
+                        <p>Lacak paket, simpan riwayat pengiriman, dan kelola akun pribadimu.</p>
+                        <ul class="feature-list">
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Lacak resi real-time</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Riwayat pengiriman</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Notifikasi status</li>
+                        </ul>
+                        <button class="btn btn-primary btn-full" style="margin-bottom: 12px;" onclick="showPage('login')">Masuk</button>
+                        <button class="btn btn-outline btn-full" onclick="showPage('register', 'customer')">Daftar Baru</button>
+                    </div>
+
+                    <!-- Staff Card -->
+                    <div class="portal-card staff reveal">
+                        <div class="portal-header">
+                            <div class="portal-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 3h15V1H1v2zm0 4h15V5H1v2zm0 4h15V9H1v2zm0 4h15v-2H1v2zm18 1V3h-2v12h2zm0 0v2h2v-2h-2zm-6 4v-2h-2v2h2zm6 0v-2h-2v2h2zm3-13h-3v2h3V5z"></path><rect x="14" y="3" width="7" height="18" rx="2"></rect><path d="M17 18h1"></path></svg>
+                            </div>
+                            <h3>Staff / Kurir</h3>
+                        </div>
+                        <p>Akses dashboard operasional, kelola kiriman, dan administrasi cabang.</p>
+                        <ul class="feature-list">
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Scan & update paket</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Manajemen rute</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Laporan harian</li>
+                        </ul>
+                        <button class="btn btn-ghost btn-full" style="margin-bottom: 12px; border: 1.5px solid var(--border);" onclick="showPage('staff-login')">Login Staff</button>
+                        <button class="btn btn-emerald btn-full" onclick="showPage('register', 'staff')">Daftar Staff</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-box">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                        </div>
+                        Expedition
+                    </a>
+                    <p style="color: var(--muted); font-size: 14px; line-height: 1.6;">Solusi logistik modern dengan integrasi teknologi untuk pengiriman yang lebih transparan dan efisien.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                        <a href="#" class="social-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg></a>
+                        <a href="#" class="social-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                        <a href="#" class="social-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Layanan</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Same Day</a></li>
+                        <li><a href="#">Reguler</a></li>
+                        <li><a href="#">Kargo</a></li>
+                        <li><a href="#">COD</a></li>
+                        <li><a href="#">Asuransi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Perusahaan</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Karir</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Pusat Bantuan</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Kontak</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Jl. Logistik No. 123, Jakarta</a></li>
+                        <li><a href="#">(021) 1234-5678</a></li>
+                        <li><a href="#">support@expedition.id</a></li>
+                        <li><a href="#">Senin - Minggu: 24 Jam</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container footer-bottom">
+                <div>© 2026 Expedition. All rights reserved.</div>
+                <div style="display: flex; gap: 24px;">
+                    <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Page: Login Customer -->
+    <div id="page-login" class="page">
+        <div class="auth-split">
+            <div class="auth-panel">
+                <div class="auth-content">
+                    <h2>Kirim Paket Jadi Lebih Mudah.</h2>
+                    <p>Masuk ke akun Anda untuk menikmati fitur pengiriman yang lebih lengkap dan terintegrasi.</p>
+                </div>
+            </div>
+            <div class="auth-form-side">
+                <div class="auth-box">
+                    <a href="javascript:void(0)" onclick="showPage('home')" style="color: var(--muted); text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 40px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Kembali ke Beranda
+                    </a>
+                    <h1>Selamat datang kembali</h1>
+                    <p class="sub">Silakan masukkan email dan password Anda.</p>
+                    
+                    <form onsubmit="handleLogin(event, 'customer')">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <div class="form-input-wrap">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                <input type="email" placeholder="nama@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <div class="form-input-wrap">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <input type="password" placeholder="••••••••" required>
+                            </div>
+                        </div>
+                        <div class="form-options">
+                            <label class="checkbox-group">
+                                <input type="checkbox"> Ingat saya
+                            </label>
+                            <a href="#">Lupa password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" id="login-customer-btn">Masuk</button>
+                    </form>
+
+                    <div class="divider">atau</div>
+                    <button class="btn btn-outline btn-full" onclick="showPage('register')">Daftar akun baru</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Register -->
+    <div id="page-register" class="page">
+        <div class="auth-split">
+            <div class="auth-panel">
+                <div class="auth-content">
+                    <h2>Bergabunglah Bersama Kami.</h2>
+                    <p>Nikmati kemudahan logistik dalam genggaman Anda. Daftar sekarang, gratis!</p>
+                </div>
+            </div>
+            <div class="auth-form-side">
+                <div class="auth-box">
+                    <a href="javascript:void(0)" onclick="showPage('home')" style="color: var(--muted); text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 40px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Kembali ke Beranda
+                    </a>
+                    
+                    <div class="step-indicator">
+                        <div class="step-dot active" id="step-dot-1">1</div>
+                        <div class="step-line" id="step-line-1"></div>
+                        <div class="step-dot" id="step-dot-2">2</div>
+                    </div>
+
+                    <!-- Step 1: Role Selection -->
+                    <div id="reg-step-1">
+                        <h1>Siapa Anda?</h1>
+                        <p class="sub">Pilih jenis akun yang ingin Anda buat.</p>
+                        
+                        <div class="role-selector">
+                            <div class="role-option" id="role-cust" onclick="selectRole('customer')">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--accent)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <h4>Customer</h4>
+                                <p>Kirim & lacak paket pribadi</p>
+                            </div>
+                            <div class="role-option" id="role-staff" onclick="selectRole('staff')">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--green)"><rect x="14" y="3" width="7" height="18" rx="2"></rect><path d="M1 3h15V1H1v2zm0 4h15V5H1v2zm0 4h15V9H1v2zm0 4h15v-2H1v2zm18 1V3h-2v12h2zm0 0v2h2v-2h-2zm-6 4v-2h-2v2h2zm6 0v-2h-2v2h2zm3-13h-3v2h3V5z"></path></svg>
+                                <h4>Staff / Kurir</h4>
+                                <p>Dashboard operasional</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="nextStepReg()">Lanjut <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"></path></svg></button>
+                    </div>
+
+                    <!-- Step 2: Data Input -->
+                    <div id="reg-step-2" style="display: none;">
+                        <h1 id="reg-title">Daftar Customer</h1>
+                        <p class="sub">Lengkapi data diri Anda di bawah ini.</p>
+                        
+                        <form onsubmit="handleRegister(event)">
+                            <div class="form-group">
+                                <label>Nama Lengkap</label>
+                                <div class="form-input-wrap">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <input type="text" id="reg-name" placeholder="Budi Santoso" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <div class="form-input-wrap">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    <input type="email" id="reg-email" placeholder="nama@email.com" required>
+                                </div>
+                            </div>
+
+                            <!-- Staff Only Fields -->
+                            <div id="staff-fields" style="display: none;">
+                                <div class="form-group">
+                                    <label>ID Karyawan</label>
+                                    <div class="form-input-wrap">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                                        <input type="text" placeholder="EMP-2026-XXX">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cabang</label>
+                                    <div class="form-input-wrap">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                        <select>
+                                            <option>Jakarta Barat</option>
+                                            <option>Jakarta Pusat</option>
+                                            <option>Surabaya Hub</option>
+                                            <option>Bandung Branch</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Password</label>
+                                <div class="form-input-wrap">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                    <input type="password" placeholder="••••••••" required>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-full" id="reg-submit-btn">Buat Akun</button>
+                            <button type="button" class="btn btn-ghost btn-full" style="margin-top: 12px;" onclick="prevStepReg()">← Sebelumnya</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Staff Login -->
+    <div id="page-staff-login" class="page">
+        <div class="staff-login-card">
+            <div class="staff-badge-lock">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Portal Staff & Kurir — Akses Terbatas
+            </div>
+            
+            <a href="javascript:void(0)" onclick="showPage('home')" class="logo" style="margin-bottom: 32px;">
+                <div class="logo-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                </div>
+                Expedition
+            </a>
+
+            <form onsubmit="handleLogin(event, 'staff')">
+                <div class="form-group">
+                    <label>Email Staff</label>
+                    <div class="form-input-wrap">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <input type="email" placeholder="staff@expedition.id" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="form-input-wrap">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-emerald btn-full" id="login-staff-btn">Masuk ke Dashboard</button>
+            </form>
+            
+            <a href="javascript:void(0)" onclick="showPage('home')" style="color: var(--muted); text-decoration: none; font-size: 14px; display: block; text-align: center; margin-top: 24px;">← Kembali ke beranda</a>
+        </div>
+    </div>
+
+    <script>
+        // --- State ---
+        const appState = {
+            isLoggedIn: false,
+            user: null,
+            role: null,
+            theme: localStorage.getItem('theme') || 'light',
+            regRole: 'customer'
+        };
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTheme(appState.theme);
+            initReveal();
+            animateHero();
+            animateCountUp('success-rate', 99.9, 2000, 1, '%');
+        });
+
+        // --- Multi-page Routing ---
+        function showPage(pageId, roleHint = null) {
+            // Smooth Scroll to Top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => {
+                p.style.display = 'none';
+                p.style.opacity = '0';
+            });
+
+            const target = document.getElementById(`page-${pageId}`);
+            if (!target) return;
+
+            target.style.display = pageId === 'staff-login' ? 'flex' : 'block';
+            
+            setTimeout(() => {
+                target.style.opacity = '1';
+                target.style.transition = 'opacity 0.4s ease';
+            }, 50);
+
+            // Special cases
+            if (pageId === 'register' && roleHint) {
+                selectRole(roleHint);
+            }
+            if (pageId === 'home') {
+                animateHero();
+            }
+        }
+
+        // --- Theme Toggle with Ripple ---
+        function toggleTheme(e) {
+            const nextTheme = appState.theme === 'light' ? 'dark' : 'light';
+            const originX = e.clientX;
+            const originY = e.clientY;
+
+            triggerRipple(originX, originY, () => {
+                appState.theme = nextTheme;
+                applyTheme(nextTheme);
+            });
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            const icon = document.getElementById('theme-icon');
+            if (theme === 'dark') {
+                icon.innerHTML = '<path d="M12 3V1m0 22v-2m9-9h2M1 12h2m15.364 6.364l1.414 1.414M4.222 4.222l1.414 1.414m12.728 0l-1.414 1.414M6.364 17.636l-1.414 1.414M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"></path>';
+            } else {
+                icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            }
+        }
+
+        function triggerRipple(originX, originY, callback) {
+            const canvas = document.getElementById('ripple-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.style.display = 'block';
+            canvas.style.opacity = '1';
+
+            const maxR = Math.hypot(canvas.width, canvas.height);
+            const color = appState.theme === 'light' ? '#0B0F1A' : '#F4F6FB';
+            
+            let r = 0;
+            const start = performance.now();
+            const duration = 650;
+
+            function easeOut(t) { return 1 - Math.pow(1-t, 3); }
+
+            function draw(now) {
+                const elapsed = now - start;
+                const t = Math.min(elapsed / duration, 1);
+                r = easeOut(t) * maxR;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+                ctx.arc(originX, originY, r, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+
+                if (t < 0.5) {
+                    requestAnimationFrame(draw);
+                } else if (t >= 0.5 && t < 0.55) {
+                    // Switch theme halfway through
+                    if (callback) {
+                        callback();
+                        callback = null; // Ensure only called once
+                    }
+                    requestAnimationFrame(draw);
+                } else if (t < 1) {
+                    requestAnimationFrame(draw);
+                } else {
+                    canvas.style.opacity = '0';
+                    canvas.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        canvas.style.display = 'none';
+                    }, 300);
+                }
+            }
+            requestAnimationFrame(draw);
+        }
+
+        // --- Navbar Scroll ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // --- Reveal Animations ---
+        function initReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('is-visible');
+                        // Trigger count up for stats
+                        if (e.target.id === 'stats') {
+                            const statNums = e.target.querySelectorAll('.stat-number');
+                            statNums.forEach(el => {
+                                const target = parseFloat(el.dataset.target);
+                                const dec = parseInt(el.dataset.decimals || 0);
+                                const suffix = el.dataset.suffix || '';
+                                animateCountUp(el, target, 2000, dec, suffix);
+                            });
+                        }
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        function animateHero() {
+            const els = ['hero-enter-1', 'hero-enter-2', 'hero-enter-3', 'hero-enter-4'];
+            els.forEach((cls, i) => {
+                const el = document.querySelector('.' + cls);
+                if (el) {
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.animation = 'none';
+                        el.offsetHeight; // reflow
+                        el.style.animation = `slideUp 0.6s ease forwards ${i * 0.1}s`;
+                    }, 10);
+                }
+            });
+        }
+
+        function animateCountUp(el, target, duration, decimals = 0, suffix = '') {
+            if (typeof el === 'string') el = document.getElementById(el);
+            if (!el || el.dataset.animated === 'true') return;
+            el.dataset.animated = 'true';
+
+            const startVal = 0;
+            const startTime = performance.now();
+
+            function update(now) {
+                const t = Math.min((now - startTime) / duration, 1);
+                const ease = 1 - Math.pow(1 - t, 3);
+                const current = (ease * target).toFixed(decimals);
+                el.textContent = current.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + suffix;
+                if (t < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        // --- Auth Sim ---
+        function handleLogin(e, role) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            setLoading(btn, true);
+
+            setTimeout(() => {
+                setLoading(btn, false);
+                const userData = role === 'staff' 
+                    ? { name: 'Admin Expedition', role: 'staff', initials: 'AE' }
+                    : { name: 'Budi Santoso', role: 'customer', initials: 'BS' };
+                
+                loginUser(userData);
+                showToast(`Selamat datang kembali, ${userData.name}! 👋`, 'success');
+                showPage('home');
+            }, 1200);
+        }
+
+        function loginUser(user) {
+            appState.isLoggedIn = true;
+            appState.user = user;
+            
+            document.getElementById('auth-buttons').style.display = 'none';
+            const profile = document.getElementById('user-profile');
+            profile.style.display = 'flex';
+            
+            document.getElementById('user-name').textContent = user.name;
+            const avatar = document.getElementById('user-avatar');
+            avatar.firstChild.textContent = user.initials;
+
+            const badge = document.getElementById('staff-indicator');
+            badge.style.display = user.role === 'staff' ? 'block' : 'none';
+        }
+
+        function logout() {
+            appState.isLoggedIn = false;
+            appState.user = null;
+            document.getElementById('auth-buttons').style.display = 'flex';
+            document.getElementById('user-profile').style.display = 'none';
+            showToast('Anda telah keluar.', 'success');
+        }
+
+        function toggleDropdown(e) {
+            e.stopPropagation();
+            const dd = document.getElementById('user-dropdown');
+            const isOpen = dd.style.display === 'block';
+            dd.style.display = isOpen ? 'none' : 'block';
+        }
+
+        window.onclick = () => {
+            document.getElementById('user-dropdown').style.display = 'none';
+        }
+
+        // --- Register Logic ---
+        function selectRole(role) {
+            appState.regRole = role;
+            document.getElementById('role-cust').classList.toggle('selected', role === 'customer');
+            document.getElementById('role-staff').classList.toggle('selected', role === 'staff');
+            document.getElementById('role-staff').classList.toggle('staff', role === 'staff');
+        }
+
+        function nextStepReg() {
+            document.getElementById('reg-step-1').style.display = 'none';
+            document.getElementById('reg-step-2').style.display = 'block';
+            
+            document.getElementById('step-dot-1').classList.add('done');
+            document.getElementById('step-dot-1').innerHTML = '✓';
+            document.getElementById('step-dot-2').classList.add('active');
+            document.getElementById('step-line-1').style.background = 'var(--green)';
+
+            const title = document.getElementById('reg-title');
+            const staffFields = document.getElementById('staff-fields');
+            const submitBtn = document.getElementById('reg-submit-btn');
+
+            if (appState.regRole === 'staff') {
+                title.textContent = 'Daftar Akun Staff';
+                staffFields.style.display = 'block';
+                submitBtn.textContent = 'Daftar sebagai Staff';
+                submitBtn.classList.add('btn-emerald');
+                submitBtn.classList.remove('btn-primary');
+            } else {
+                title.textContent = 'Daftar Akun Customer';
+                staffFields.style.display = 'none';
+                submitBtn.textContent = 'Buat Akun';
+                submitBtn.classList.add('btn-primary');
+                submitBtn.classList.remove('btn-emerald');
+            }
+        }
+
+        function prevStepReg() {
+            document.getElementById('reg-step-1').style.display = 'block';
+            document.getElementById('reg-step-2').style.display = 'none';
+            
+            document.getElementById('step-dot-1').classList.remove('done');
+            document.getElementById('step-dot-1').innerHTML = '1';
+            document.getElementById('step-dot-2').classList.remove('active');
+            document.getElementById('step-line-1').style.background = 'var(--border)';
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('reg-submit-btn');
+            const name = document.getElementById('reg-name').value;
+            setLoading(btn, true);
+
+            setTimeout(() => {
+                setLoading(btn, false);
+                const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                loginUser({ name, role: appState.regRole, initials });
+                showToast('Akun berhasil dibuat!', 'success');
+                showPage('home');
+            }, 1500);
+        }
+
+        // --- Tracking ---
+        function handleTrack(e) {
+            e.preventDefault();
+            const input = document.getElementById('resi-input');
+            const btn = document.getElementById('track-btn');
+            const result = document.getElementById('tracking-result');
+
+            if (!input.value.trim()) {
+                input.classList.add('input-error');
+                setTimeout(() => input.classList.remove('input-error'), 400);
+                return;
+            }
+
+            setLoading(btn, true);
+            result.style.display = 'none';
+
+            setTimeout(() => {
+                setLoading(btn, false);
+                result.style.display = 'block';
+                document.getElementById('res-resi').textContent = input.value.toUpperCase();
+                renderTimeline();
+                // Scroll to result
+                result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1200);
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline');
+            const steps = [
+                { title: 'Paket Diterima', location: 'Agen Jakarta Barat', time: '29 Apr 2026, 08:00', status: 'completed' },
+                { title: 'Diproses di Gudang', location: 'Jakarta Sorting Center', time: '29 Apr 2026, 11:30', status: 'completed' },
+                { title: 'Berangkat ke Tujuan', location: 'Meninggalkan Jakarta', time: '29 Apr 2026, 14:00', status: 'completed' },
+                { title: 'Di Hub Tujuan', location: 'Surabaya Hub', time: '30 Apr 2026, 06:00', status: 'active' },
+                { title: 'Dalam Pengiriman', location: 'Kurir sedang menuju alamat', time: 'Estimasi hari ini', status: 'pending' },
+                { title: 'Paket Terkirim', location: '-', time: '-', status: 'pending' }
+            ];
+
+            container.innerHTML = '';
+            steps.forEach((s, i) => {
+                const stepEl = document.createElement('div');
+                stepEl.className = `timeline-step ${s.status}`;
+                stepEl.innerHTML = `
+                    <div class="timeline-indicator">
+                        <div class="dot"></div>
+                        ${i < steps.length - 1 ? '<div class="line"></div>' : ''}
+                    </div>
+                    <div class="timeline-content">
+                        <h4>${s.title} ${s.status === 'active' ? '<span class="badge-active">Dalam Perjalanan</span>' : ''}</h4>
+                        <p>${s.location}</p>
+                        <span class="time">${s.time}</span>
+                    </div>
+                `;
+                container.appendChild(stepEl);
+
+                // Staggered animate in
+                setTimeout(() => {
+                    stepEl.style.opacity = '1';
+                    stepEl.style.transform = 'translateY(0)';
+                    stepEl.style.transition = 'all 0.4s ease';
+                }, i * 150);
+            });
+        }
+
+        // --- UI Utilities ---
+        function setLoading(btn, isLoading) {
+            if (isLoading) {
+                btn.dataset.oldText = btn.innerHTML;
+                btn.innerHTML = '<div class="spinner"></div>';
+                btn.disabled = true;
+            } else {
+                btn.innerHTML = btn.dataset.oldText;
+                btn.disabled = false;
+            }
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                ${type === 'success' ? '✓' : '✕'}
+                <span>${msg}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+    </script>
+</body>
+</html>
