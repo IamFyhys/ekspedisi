@@ -1,0 +1,54 @@
+# ==========================================================
+# CHEAT SHEET UJIKOM - PADLI (ABSEN 26) - XII SIJA 2
+# ==========================================================
+
+# 1. SETUP HOSTNAME & HOSTS
+# Jalankan di VM1:
+sudo hostnamectl set-hostname padli_controller
+# Jalankan di VM2:
+sudo hostnamectl set-hostname padli_managed
+
+# Edit /etc/hosts di KEDUA VM:
+# sudo nano /etc/hosts
+# Tambahkan:
+# 127.0.0.1 padli_controller  (di VM1)
+# 127.0.0.1 padli_managed     (di VM2)
+
+# 2. SETUP IP NETPLAN (Absen 26)
+# Berdasarkan pola tabel:
+# Range: 252 - 261
+# Gateway: 172.20.3.1
+# IP VM1: 172.20.3.253
+# IP VM2: 172.20.3.254
+
+# Edit file: sudo nano /etc/netplan/00-installer-config.yaml
+# Isi untuk VM1:
+# network:
+#   ethernets:
+#     ens33: {dhcp4: true}
+#     ens38:
+#       addresses: [172.20.3.253/24]
+#       gateway4: 172.20.3.1
+#       nameservers:
+#         addresses: [8.8.8.8]
+#   version: 2
+
+# Apply: sudo netplan apply
+
+# 3. DIREKTORI KERJA (Sesuai Soal Image 3 Point 3a)
+mkdir -p /home/ujikom/ekspedisi
+# Pindahkan semua file project ke folder ini.
+
+# 4. JALANKAN DOCKER (Load Balancing 3 Replicas)
+cd /home/ujikom/ekspedisi
+docker compose up -d --build --scale web=3
+
+# 5. POST-INSTALL (Masuk ke salah satu container web)
+docker compose exec web php artisan key:generate
+docker compose exec web php artisan migrate --seed
+
+# 6. VERIFIKASI
+docker compose ps
+curl localhost:8080
+docker network ls  # Pastikan ada network-ujikom
+docker volume ls   # Pastikan ada dbdata & webdata

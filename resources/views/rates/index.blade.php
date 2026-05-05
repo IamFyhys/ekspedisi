@@ -142,24 +142,49 @@
                         <input type="hidden" name="_method" value="PUT">
                     </template>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kota Asal <span class="text-rose-500">*</span></label>
-                            <select name="origin_location_id" x-model="formData.origin_location_id" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary transition-all text-slate-900" required>
-                                <option value="">Pilih Kota Asal</option>
-                                @foreach($locations as $loc)
-                                    <option value="{{ $loc->id }}">{{ $loc->name }}</option>
-                                @endforeach
-                            </select>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Provinsi Asal <span class="text-rose-500">*</span></label>
+                                <select x-model="originProvinceId" @change="onOriginProvinceChange()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all">
+                                    <option value="">Pilih Provinsi</option>
+                                    <template x-for="p in provinces" :key="p.id">
+                                        <option :value="p.id" x-text="p.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kota Asal <span class="text-rose-500">*</span></label>
+                                <select x-model="originRegencyId" @change="syncOriginLocation()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" :disabled="!originProvinceId">
+                                    <option value="">Pilih Kota/Kabupaten</option>
+                                    <template x-for="r in originRegencies" :key="r.id">
+                                        <option :value="r.id" x-text="r.name"></option>
+                                    </template>
+                                </select>
+                                <input type="hidden" name="origin_location_id" x-model="formData.origin_location_id">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kota Tujuan <span class="text-rose-500">*</span></label>
-                            <select name="destination_location_id" x-model="formData.destination_location_id" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary transition-all text-slate-900" required>
-                                <option value="">Pilih Kota Tujuan</option>
-                                @foreach($locations as $loc)
-                                    <option value="{{ $loc->id }}">{{ $loc->name }}</option>
-                                @endforeach
-                            </select>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Provinsi Tujuan <span class="text-rose-500">*</span></label>
+                                <select x-model="destProvinceId" @change="onDestProvinceChange()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all">
+                                    <option value="">Pilih Provinsi</option>
+                                    <template x-for="p in provinces" :key="p.id">
+                                        <option :value="p.id" x-text="p.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kota Tujuan <span class="text-rose-500">*</span></label>
+                                <select x-model="destRegencyId" @change="syncDestLocation()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" :disabled="!destProvinceId">
+                                    <option value="">Pilih Kota/Kabupaten</option>
+                                    <template x-for="r in destRegencies" :key="r.id">
+                                        <option :value="r.id" x-text="r.name"></option>
+                                    </template>
+                                </select>
+                                <input type="hidden" name="destination_location_id" x-model="formData.destination_location_id">
+                            </div>
                         </div>
                     </div>
 
@@ -196,6 +221,78 @@
                     price_per_kg: '',
                     estimated_days: ''
                 },
+
+                // Location API Data
+                provinces: [],
+                originProvinceId: '', originRegencyId: '', originRegencies: [],
+                destProvinceId: '', destRegencyId: '', destRegencies: [],
+
+                init() {
+                    this.loadProvinces();
+                },
+
+                loadProvinces() {
+                    fetch('/api/wilayah/provinces')
+                        .then(r => r.json())
+                        .then(data => { this.provinces = data; });
+                },
+
+                onOriginProvinceChange() {
+                    this.originRegencyId = ''; this.originRegencies = [];
+                    if (!this.originProvinceId) return;
+                    fetch(`/api/wilayah/regencies/${this.originProvinceId}`)
+                        .then(r => r.json())
+                        .then(data => { this.originRegencies = data; });
+                },
+
+                syncOriginLocation() {
+                    if (!this.originRegencyId) return;
+                    const regencyName = this.originRegencies.find(r => r.id == this.originRegencyId)?.name;
+                    const provinceName = this.provinces.find(p => p.id == this.originProvinceId)?.name;
+
+                    fetch('/api/wilayah/ensure-location', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        body: JSON.stringify({
+                            regency_name: regencyName,
+                            province_name: provinceName,
+                            district_name: '-' // Not needed for rate
+                        })
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        this.formData.origin_location_id = data.location_id;
+                    });
+                },
+
+                onDestProvinceChange() {
+                    this.destRegencyId = ''; this.destRegencies = [];
+                    if (!this.destProvinceId) return;
+                    fetch(`/api/wilayah/regencies/${this.destProvinceId}`)
+                        .then(r => r.json())
+                        .then(data => { this.destRegencies = data; });
+                },
+
+                syncDestLocation() {
+                    if (!this.destRegencyId) return;
+                    const regencyName = this.destRegencies.find(r => r.id == this.destRegencyId)?.name;
+                    const provinceName = this.provinces.find(p => p.id == this.destProvinceId)?.name;
+
+                    fetch('/api/wilayah/ensure-location', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        body: JSON.stringify({
+                            regency_name: regencyName,
+                            province_name: provinceName,
+                            district_name: '-' // Not needed for rate
+                        })
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        this.formData.destination_location_id = data.location_id;
+                    });
+                },
+
                 openModal(mode, data = null) {
                     this.modalMode = mode;
                     if (mode === 'edit' && data) {
@@ -207,9 +304,12 @@
                             estimated_days: data.estimated_days
                         };
                         this.formAction = `/rates/${data.id}`;
+                        // For edit mode, we keep it simple for now or you can implement pre-loading the selects
                     } else {
                         this.formData = { id: '', origin_location_id: '', destination_location_id: '', price_per_kg: '', estimated_days: '' };
                         this.formAction = '{{ route('rates.store') }}';
+                        this.originProvinceId = ''; this.originRegencyId = '';
+                        this.destProvinceId = ''; this.destRegencyId = '';
                     }
                     this.isModalOpen = true;
                 },

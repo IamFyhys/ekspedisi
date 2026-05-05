@@ -145,13 +145,16 @@
                         <!-- Badge status -->
                         @php
                         $badge = match($shipment->status) {
-                            'ready_to_ship'  => ['Siap Dikirim','#fef3c7','#d97706'],
-                            'in_transit'     => ['Dalam Perjalanan','#dbeafe','#1d4ed8'],
-                            'arrived_at_hub' => ['Tiba di Hub','#ede9fe','#7c3aed'],
+                            'pending'        => ['Diterima','#f1f5f9','#64748b'],
+                            'ready_to_ship'  => ['Siap Dikirim','#fff7ed','#ea580c'],
+                            'in_transit'     => ['Transit','#dbeafe','#1d4ed8'],
+                            'arrived_at_hub' => ['Di Hub','#ede9fe','#7c3aed'],
+                            'arrived_at_branch' => ['Di Cabang','#ede9fe','#7c3aed'],
                             'assigned'       => ['Siap Diantar','#dbeafe','#1d4ed8'],
-                            'out_for_delivery'=> ['Sedang Diantar','#dbeafe','#1d4ed8'],
+                            'out_for_delivery'=> ['Kurir Jalan','#dbeafe','#1d4ed8'],
                             'delivered'      => ['Terkirim','#dcfce7','#16a34a'],
-                            'failed_delivery'=> ['Gagal Kirim','#fee2e2','#dc2626'],
+                            'failed_delivery'=> ['Gagal','#fee2e2','#dc2626'],
+                            'returned_to_warehouse' => ['Retur','#fef2f2','#991b1b'],
                             default          => ['Diproses','#f1f5f9','#64748b'],
                         };
                         @endphp
@@ -371,19 +374,26 @@
 
                 @if($shipment->trackings && $shipment->trackings->count() > 0)
                     @foreach($shipment->trackings as $index => $log)
-                    <div style="display: flex; gap: 16px; position: relative;">
+                    <div style="display: flex; gap: 16px; position: relative; animation: slideIn 0.3s ease-out forwards; animation-delay: {{ $index * 0.1 }}s; opacity: 0;">
                         <!-- Garis & titik -->
                         <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0;">
                             <!-- Titik -->
                             <div style="
-                                width: 14px; height: 14px;
+                                width: 28px; height: 28px;
                                 border-radius: 50%;
-                                background: {{ $index === 0 ? '#185FA5' : '#cbd5e1' }};
-                                border: 3px solid {{ $index === 0 ? '#dbeafe' : '#f1f5f9' }};
+                                background: {{ $index === 0 ? '#185FA5' : '#fff' }};
+                                border: 2px solid {{ $index === 0 ? '#dbeafe' : '#e2e8f0' }};
+                                color: {{ $index === 0 ? '#fff' : '#94a3b8' }};
                                 z-index: 1;
                                 flex-shrink: 0;
-                                margin-top: 3px;
-                            "></div>
+                                display: flex; align-items: center; justify-content: center;
+                            ">
+                                @if($index === 0)
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                                @else
+                                    <div style="width: 6px; height: 6px; background: currentColor; border-radius: 50%;"></div>
+                                @endif
+                            </div>
                             <!-- Garis -->
                             @if(!$loop->last)
                             <div style="width: 2px; flex: 1; background: #e8edf2; margin: 4px 0; min-height: 40px;"></div>

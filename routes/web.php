@@ -167,10 +167,12 @@ Route::get('/register/success', function() {
     return view('auth.register-success');
 })->name('register.success');
 
-// Wilayah API Proxy
-Route::get('/api/wilayah/provinces', [StaffRegistrationController::class, 'getProvinces']);
-Route::get('/api/wilayah/regencies/{provinceId}', [StaffRegistrationController::class, 'getRegencies']);
-Route::get('/api/wilayah/districts/{regencyId}', [StaffRegistrationController::class, 'getDistricts']);
+// Wilayah API & Sync
+use App\Http\Controllers\WilayahController;
+Route::get('/api/wilayah/provinces', [WilayahController::class, 'getProvinces']);
+Route::get('/api/wilayah/regencies/{provinceId}', [WilayahController::class, 'getRegencies']);
+Route::get('/api/wilayah/districts/{regencyId}', [WilayahController::class, 'getDistricts']);
+Route::post('/api/wilayah/ensure-location', [WilayahController::class, 'ensureLocation']);
 
 // Admin Approval
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

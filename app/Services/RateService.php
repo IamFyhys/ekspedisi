@@ -22,7 +22,16 @@ class RateService
                     ->first();
 
         if (!$rate) {
-            return null;
+            // Jika rute tidak ditemukan, gunakan tarif default agar sistem tetap bisa jalan
+            $isSameCity = ($originLocationId == $destinationLocationId);
+            $defaultPrice = $isSameCity ? 8000 : 18000;
+            $defaultDays = $isSameCity ? 1 : 3;
+
+            // Buat objek dummy rate agar kode di bawah tetap jalan
+            $rate = (object) [
+                'price_per_kg' => $defaultPrice,
+                'estimated_days' => $defaultDays
+            ];
         }
 
         // 1. Calculate Volumetric Weight

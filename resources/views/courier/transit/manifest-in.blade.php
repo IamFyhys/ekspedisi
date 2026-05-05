@@ -48,7 +48,12 @@
 
                         <div class="space-y-4 pt-4 border-t border-slate-50">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Scan Paket Masuk</label>
-                            <input type="text" x-model="tempResi" @keyup.enter="scanItem" placeholder="Scan No. Resi..." class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-4 focus:ring-primary/10 transition-all font-black uppercase">
+                            <div class="flex gap-2">
+                                <input type="text" x-model="tempResi" @keyup.enter="scanItem" placeholder="No. Resi..." class="flex-1 px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-4 focus:ring-primary/10 transition-all font-black uppercase text-sm">
+                                <button @click="startScanner" class="p-4 bg-slate-900 text-white rounded-2xl shadow-lg hover:bg-slate-800 transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                </button>
+                            </div>
                         </div>
                         
                         <button @click="showConfirm = true" :disabled="scannedItems.length === 0" class="w-full py-5 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all uppercase tracking-widest text-[10px]">Selesai & Konfirmasi</button>
@@ -111,10 +116,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Scanner Modal -->
+        <div x-show="showScanner" class="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md" x-cloak>
+            <div class="bg-white rounded-[2.5rem] w-full max-w-lg overflow-hidden shadow-2xl flex flex-col">
+                <div class="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
+                    <h3 class="text-xl font-black text-slate-900">Scanner Kamera</h3>
+                    <button @click="stopScanner" class="w-10 h-10 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <div class="p-4 bg-slate-50">
+                    <div id="reader-in" class="overflow-hidden rounded-2xl border-4 border-white shadow-inner" style="background: #000;"></div>
+                </div>
+                <div class="p-8 text-center">
+                    <p class="text-xs font-bold text-slate-400">Arahkan kamera ke Barcode paket yang baru sampai.</p>
+                </div>
+            </div>
+        </div>
         @endif
     </div>
 
     @push('scripts')
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <script>
         function manifestIn() {
             return {
@@ -123,6 +147,35 @@
                 filter: 'all',
                 showConfirm: false,
                 missingNote: '',
+                showScanner: false,
+                html5QrCode: null,
+
+                startScanner() {
+                    this.showScanner = true;
+                    this.$nextTick(() => {
+                        this.html5QrCode = new Html5Qrcode("reader-in");
+                        this.html5QrCode.start(
+                            { facingMode: "environment" }, 
+                            { fps: 10, qrbox: { width: 250, height: 150 } }, 
+                            (decodedText) => {
+                                this.tempResi = decodedText;
+                                this.scanItem();
+                                if (navigator.vibrate) navigator.vibrate(100);
+                            }
+                        ).catch(err => {
+                            console.error(err);
+                            this.showScanner = false;
+                        });
+                    });
+                },
+
+                stopScanner() {
+                    if (this.html5QrCode) {
+                        this.html5QrCode.stop().finally(() => { this.showScanner = false; });
+                    } else {
+                        this.showScanner = false;
+                    }
+                },
                 // In a real app, you'd load the expected items from the server or local storage
                 // For demo, we'll assume we know what they are (this could be passed via compact)
                 expectedItems: [

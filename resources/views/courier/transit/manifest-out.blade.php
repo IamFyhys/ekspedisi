@@ -139,15 +139,75 @@
                 </table>
             </div>
         </div>
+
+        <!-- Scanner Modal -->
+        <div x-show="showScanner" class="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md" x-cloak>
+            <div class="bg-white rounded-[2.5rem] w-full max-w-lg overflow-hidden shadow-2xl flex flex-col">
+                <div class="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
+                    <h3 class="text-xl font-black text-slate-900">Scanner Kamera</h3>
+                    <button @click="stopScanner" class="w-10 h-10 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <div class="p-4 bg-slate-50">
+                    <div id="reader" class="overflow-hidden rounded-2xl border-4 border-white shadow-inner" style="background: #000;"></div>
+                </div>
+                <div class="p-8 text-center">
+                    <p class="text-xs font-bold text-slate-400">Arahkan kamera ke Barcode / QR Code pada paket.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     @push('scripts')
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <script>
         function manifestOut() {
             return {
                 destinationId: '',
                 scannedResi: '',
                 items: [],
+                showScanner: false,
+                html5QrCode: null,
+
+                startScanner() {
+                    this.showScanner = true;
+                    this.$nextTick(() => {
+                        this.html5QrCode = new Html5Qrcode("reader");
+                        const config = { fps: 10, qrbox: { width: 250, height: 150 } };
+                        
+                        this.html5QrCode.start(
+                            { facingMode: "environment" }, 
+                            config, 
+                            (decodedText) => {
+                                this.scannedResi = decodedText;
+                                this.addItem();
+                                // Feedback suara & getar jika didukung
+                                if (navigator.vibrate) navigator.vibrate(100);
+                            },
+                            (errorMessage) => {
+                                // Ignore constant scan errors
+                            }
+                        ).catch((err) => {
+                            console.error("Unable to start scanning.", err);
+                            Swal.fire('Error', 'Gagal membuka kamera. Pastikan izin kamera diberikan.', 'error');
+                            this.showScanner = false;
+                        });
+                    });
+                },
+
+                stopScanner() {
+                    if (this.html5QrCode) {
+                        this.html5QrCode.stop().then(() => {
+                            this.showScanner = false;
+                        }).catch(err => {
+                            this.showScanner = false;
+                        });
+                    } else {
+                        this.showScanner = false;
+                    }
+                },
+
                 async addItem() {
                     if (!this.scannedResi.trim()) return;
                     

@@ -26,29 +26,45 @@
                             <div>
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">No. Telepon</label>
                                 <div class="flex gap-2">
-                                    <input type="text" x-model="formData.sender_phone" class="flex-1 bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" required>
+                                    <input type="text" 
+                                           x-model="formData.sender_phone" 
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                           class="flex-1 bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" 
+                                           placeholder="Contoh: 08123456789"
+                                           required>
                                     <button type="button" @click="searchCustomer()" class="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-all" title="Cari Data Pengirim">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                     </button>
                                 </div>
                             </div>
                             <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Provinsi Asal</label>
+                                <select x-model="originProvinceId" @change="onOriginProvinceChange()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all">
+                                    <option value="">Pilih Provinsi</option>
+                                    <template x-for="p in provinces" :key="p.id">
+                                        <option :value="p.id" x-text="p.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div>
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kota Asal</label>
-                                <select x-model="formData.origin_location_id" @change="onOriginCityChange()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" required>
-                                    <option value="">Pilih Kota</option>
-                                    @foreach($locations as $loc)
-                                        <option value="{{ $loc->id }}">{{ $loc->name }}</option>
-                                    @endforeach
+                                <select x-model="originRegencyId" @change="onOriginRegencyChange()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" :disabled="!originProvinceId">
+                                    <option value="">Pilih Kota/Kabupaten</option>
+                                    <template x-for="r in originRegencies" :key="r.id">
+                                        <option :value="r.id" x-text="r.name"></option>
+                                    </template>
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kecamatan Asal</label>
-                                <select x-model="formData.origin_subdistrict_id" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" required>
+                                <select x-model="originDistrictId" @change="syncOriginLocation()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" :disabled="!originRegencyId">
                                     <option value="">Pilih Kecamatan</option>
-                                    <template x-for="sub in originSubdistricts" :key="sub.id">
-                                        <option :value="sub.id" x-text="sub.name"></option>
+                                    <template x-for="d in originDistricts" :key="d.id">
+                                        <option :value="d.id" x-text="d.name"></option>
                                     </template>
                                 </select>
+                                <input type="hidden" name="origin_location_id" x-model="formData.origin_location_id">
+                                <input type="hidden" name="origin_subdistrict_id" x-model="formData.origin_subdistrict_id">
                             </div>
                         </div>
 
@@ -61,25 +77,41 @@
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">No. Telepon</label>
-                                <input type="text" x-model="formData.receiver_phone" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" required>
+                                <input type="text" 
+                                       x-model="formData.receiver_phone" 
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                       class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" 
+                                       placeholder="Contoh: 08123456789"
+                                       required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Provinsi Tujuan</label>
+                                <select x-model="destProvinceId" @change="onDestProvinceChange()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all">
+                                    <option value="">Pilih Provinsi</option>
+                                    <template x-for="p in provinces" :key="p.id">
+                                        <option :value="p.id" x-text="p.name"></option>
+                                    </template>
+                                </select>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kota Tujuan</label>
-                                <select x-model="formData.destination_location_id" @change="onDestCityChange($event)" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" required>
-                                    <option value="">Pilih Kota</option>
-                                    @foreach($locations as $loc)
-                                        <option value="{{ $loc->id }}">{{ $loc->name }}</option>
-                                    @endforeach
+                                <select x-model="destRegencyId" @change="onDestRegencyChange()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" :disabled="!destProvinceId">
+                                    <option value="">Pilih Kota/Kabupaten</option>
+                                    <template x-for="r in destRegencies" :key="r.id">
+                                        <option :value="r.id" x-text="r.name"></option>
+                                    </template>
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kecamatan Tujuan</label>
-                                <select x-model="formData.destination_subdistrict_id" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" required>
+                                <select x-model="destDistrictId" @change="syncDestLocation()" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary text-slate-900 transition-all" :disabled="!destRegencyId">
                                     <option value="">Pilih Kecamatan</option>
-                                    <template x-for="sub in destinationSubdistricts" :key="sub.id">
-                                        <option :value="sub.id" x-text="sub.name"></option>
+                                    <template x-for="d in destDistricts" :key="d.id">
+                                        <option :value="d.id" x-text="d.name"></option>
                                     </template>
                                 </select>
+                                <input type="hidden" name="destination_location_id" x-model="formData.destination_location_id">
+                                <input type="hidden" name="destination_subdistrict_id" x-model="formData.destination_subdistrict_id">
                             </div>
                         </div>
                     </div>
@@ -267,25 +299,145 @@
             loading: false,
             showSuccessModal: false,
             successData: {},
+            
+            // Location Selection Data
+            provinces: [],
+            originProvinceId: '', originRegencyId: '', originDistrictId: '',
+            originRegencies: [], originDistricts: [],
+            destProvinceId: '', destRegencyId: '', destDistrictId: '',
+            destRegencies: [], destDistricts: [],
+
+            init() {
+                this.loadProvinces();
+            },
+
+            loadProvinces() {
+                fetch('/api/wilayah/provinces')
+                    .then(r => r.json())
+                    .then(data => { this.provinces = data; });
+            },
+
+            onOriginProvinceChange() {
+                this.originRegencyId = ''; this.originDistrictId = '';
+                this.originRegencies = []; this.originDistricts = [];
+                if (!this.originProvinceId) return;
+                fetch(`/api/wilayah/regencies/${this.originProvinceId}`)
+                    .then(r => r.json())
+                    .then(data => { this.originRegencies = data; });
+            },
+
+            onOriginRegencyChange() {
+                this.originDistrictId = ''; this.originDistricts = [];
+                if (!this.originRegencyId) return;
+                fetch(`/api/wilayah/districts/${this.originRegencyId}`)
+                    .then(r => r.json())
+                    .then(data => { this.originDistricts = data; });
+            },
+
+            syncOriginLocation() {
+                if (!this.originDistrictId) return;
+                const regencyName = this.originRegencies.find(r => r.id == this.originRegencyId)?.name;
+                const provinceName = this.provinces.find(p => p.id == this.originProvinceId)?.name;
+                const districtName = this.originDistricts.find(d => d.id == this.originDistrictId)?.name;
+
+                fetch('/api/wilayah/ensure-location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({
+                        regency_name: regencyName,
+                        province_name: provinceName,
+                        district_name: districtName
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    this.formData.origin_location_id = data.location_id;
+                    this.formData.origin_subdistrict_id = data.subdistrict_id;
+                    this.calculateRate();
+                });
+            },
+
+            onDestProvinceChange() {
+                this.destRegencyId = ''; this.destDistrictId = '';
+                this.destRegencies = []; this.destDistricts = [];
+                if (!this.destProvinceId) return;
+                fetch(`/api/wilayah/regencies/${this.destProvinceId}`)
+                    .then(r => r.json())
+                    .then(data => { this.destRegencies = data; });
+            },
+
+            onDestRegencyChange() {
+                this.destDistrictId = ''; this.destDistricts = [];
+                if (!this.destRegencyId) return;
+                fetch(`/api/wilayah/districts/${this.destRegencyId}`)
+                    .then(r => r.json())
+                    .then(data => { this.destDistricts = data; });
+            },
+
+            syncDestLocation() {
+                if (!this.destDistrictId) return;
+                const regencyName = this.destRegencies.find(r => r.id == this.destRegencyId)?.name;
+                const provinceName = this.provinces.find(p => p.id == this.destProvinceId)?.name;
+                const districtName = this.destDistricts.find(d => d.id == this.destDistrictId)?.name;
+                this.destinationName = regencyName;
+
+                fetch('/api/wilayah/ensure-location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({
+                        regency_name: regencyName,
+                        province_name: provinceName,
+                        district_name: districtName
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    this.formData.destination_location_id = data.location_id;
+                    this.formData.destination_subdistrict_id = data.subdistrict_id;
+                    this.calculateRate();
+                });
+            },
 
             searchCustomer() {
-                if (!this.formData.sender_phone) return;
+                if (!this.formData.sender_phone) {
+                    Swal.fire({
+                        toast: true, position: 'top-end', icon: 'warning',
+                        title: 'Masukkan nomor HP dulu!', showConfirmButton: false, timer: 1500
+                    });
+                    return;
+                }
+                
+                const btn = event.currentTarget;
+                const originalHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<svg class="animate-spin h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+
                 fetch(`{{ url('/cashier/search-customer') }}?phone=${this.formData.sender_phone}`)
                     .then(r => r.json())
                     .then(data => {
+                        btn.disabled = false;
+                        btn.innerHTML = originalHtml;
+                        
                         if (data.found) {
                             this.formData.sender_name = data.sender_name;
-                            this.formData.sender_address = data.sender_address;
+                            // Jika ada field alamat di form, bisa diisi juga
+                            if (data.sender_address) {
+                                this.formData.sender_address = data.sender_address;
+                            }
                             Swal.fire({
                                 toast: true, position: 'top-end', icon: 'success',
-                                title: 'Data pelanggan ditemukan!', showConfirmButton: false, timer: 1500
+                                title: 'Data pelanggan ditemukan!', showConfirmButton: false, timer: 2000
                             });
                         } else {
                             Swal.fire({
                                 toast: true, position: 'top-end', icon: 'info',
-                                title: 'Pelanggan baru.', showConfirmButton: false, timer: 1500
+                                title: 'Nomor baru (belum terdaftar).', showConfirmButton: false, timer: 2000
                             });
                         }
+                    })
+                    .catch(() => {
+                        btn.disabled = false;
+                        btn.innerHTML = originalHtml;
                     });
             },
 
@@ -348,10 +500,36 @@
             },
 
             submitForm() {
-                if (!this.formData.payment_method) {
-                    Swal.fire('Pilih Metode', 'Silakan pilih metode pembayaran.', 'warning');
+                // Validation
+                if (!this.formData.sender_name || !this.formData.sender_phone) {
+                    Swal.fire('Data Pengirim', 'Nama dan No. HP pengirim wajib diisi.', 'warning');
                     return;
                 }
+                if (!this.formData.origin_location_id || !this.formData.origin_subdistrict_id) {
+                    Swal.fire('Lokasi Asal', 'Silakan pilih lokasi asal dengan lengkap.', 'warning');
+                    return;
+                }
+                if (!this.formData.receiver_name || !this.formData.receiver_phone || !this.formData.receiver_address) {
+                    Swal.fire('Data Penerima', 'Nama, No. HP, dan Alamat penerima wajib diisi.', 'warning');
+                    return;
+                }
+                if (!this.formData.destination_location_id || !this.formData.destination_subdistrict_id) {
+                    Swal.fire('Lokasi Tujuan', 'Silakan pilih lokasi tujuan dengan lengkap.', 'warning');
+                    return;
+                }
+                if (!this.formData.item_name || !this.formData.weight) {
+                    Swal.fire('Detail Paket', 'Nama barang dan berat wajib diisi.', 'warning');
+                    return;
+                }
+                if (this.totalPrice <= 0) {
+                    Swal.fire('Ongkir Tidak Ditemukan', 'Maaf, rute pengiriman ini belum memiliki tarif. Silakan hubungi admin untuk menambahkan tarif.', 'error');
+                    return;
+                }
+                if (!this.formData.payment_method) {
+                    Swal.fire('Metode Pembayaran', 'Silakan pilih metode pembayaran.', 'warning');
+                    return;
+                }
+
                 this.loading = true;
                 fetch('{{ route('shipments.store') }}', {
                     method: 'POST',

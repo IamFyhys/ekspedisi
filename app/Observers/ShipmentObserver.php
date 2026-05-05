@@ -35,15 +35,16 @@ class ShipmentObserver
     private function getStatusDescription($status)
     {
         return match ($status) {
-            'pending' => 'Paket menunggu diproses.',
-            'picked_up' => 'Paket telah diambil oleh kurir.',
-            'in_transit' => 'Paket sedang dalam perjalanan.',
+            'pending' => 'Paket telah diterima di cabang pengirim.',
+            'ready_to_ship' => 'Paket siap diberangkatkan ke kota tujuan.',
+            'in_transit' => 'Paket sedang dalam perjalanan (Transit).',
+            'arrived_at_hub' => 'Paket telah sampai di pusat transit/hub.',
             'arrived_at_branch' => 'Paket telah sampai di cabang tujuan.',
-            'out_for_delivery' => 'Paket sedang dibawa kurir menuju alamat penerima.',
+            'out_for_delivery' => 'Paket sedang dibawa kurir menuju alamat Anda.',
             'delivered' => 'Paket telah berhasil diterima.',
             'failed_delivery' => 'Gagal dalam pengiriman paket.',
             'returned_to_warehouse' => 'Paket dikembalikan ke gudang.',
-            'assigned' => 'Kurir ditugaskan untuk mengantar paket.',
+            'assigned' => 'Kurir telah ditugaskan untuk mengantar paket.',
             'cancelled' => 'Pengiriman dibatalkan.',
             default => 'Status pengiriman diperbarui.',
         };
