@@ -21,6 +21,17 @@
     .timeline-latest {
         scroll-margin-top: 20px;
     }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
 </style>
 @endsection
 

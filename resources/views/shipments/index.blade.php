@@ -6,10 +6,6 @@
                 <h1 class="text-3xl font-black text-slate-900 tracking-tight">Shipments</h1>
                 <p class="text-slate-500 font-medium">Monitor and manage all logistics activity in real-time.</p>
             </div>
-            <a href="{{ route('shipments.create') }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-2xl transition shadow-lg shadow-primary/20 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
-                New Shipment
-            </a>
         </div>
 
         <!-- Filters & Search -->
